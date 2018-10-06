@@ -1,0 +1,8 @@
+Links:
+
+CIFAR-10 Dataset: https://www.cs.toronto.edu/~kriz/cifar.html
+Places-365 Dataset: http://places2.csail.mit.edu/
+pix2pix Research Paper: https://arxiv.org/pdf/1611.07004.pdf
+Colorization with GAN Repo: https://github.com/ImagingLab/Colorizing-with-GANs
+Official pix2pix Repo: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+PyTorch Website: https://pytorch.org/
