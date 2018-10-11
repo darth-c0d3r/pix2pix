@@ -17,7 +17,7 @@ Our project can be easily extended to other tasks such as day to night, labels t
 
 This is the original Research Paper written on the pix2pix network written at the Berkeley AI Research (BAIR) Laboratory, UC Berkeley. This is the research paper that we are trying to replicate and apply to the task of colorizing Black and White images.
 
-##Datasets
+## Datasets
 ### CIFAR-10 [2]
 
 The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class.
