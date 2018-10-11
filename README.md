@@ -1,14 +1,14 @@
 # bnw2color
-CS 663 (Digital Image Processing Project)
+CS 663 (Digital Image Processing) Project
 
 ## Team
-### Rajat Rathi (160050015)
-### Anmol Singh (160050107)
-### Gurparkash Singh (160050112)
+#### Rajat Rathi (160050015)
+#### Anmol Singh (160050107)
+#### Gurparkash Singh (160050112)
 
 ## Overview
 
-The problem we are trying to solve is a general conversion of black and white images to colored. For this, we will be using Conditional GANs [Generative Adversarial Networks] to implement and extend the pix2pix network, which is a general neural network model to learn a mapping from one set of images to another, which, in our case will be from the set of black and white images to colored images.
+The problem we are trying to solve is a general conversion of black and white images to colored. For this, we will be using **Conditional GANs** [Generative Adversarial Networks] to implement and extend the **pix2pix** network, which is a general neural network model to learn a mapping from one set of images to another, which, in our case will be from the set of black and white images to colored images.
 
 Our project can be easily extended to other tasks such as day to night, labels to street scene, deblurring images etc. as the basic pix2pix network is shared among all such applications. If time permits, we will try to apply our network to one of the other tasks as well. We will be using the PyTorch framework in Python to implement the network.
 
@@ -28,19 +28,27 @@ In total, the Places dataset contains more than 10 million images comprising 400
 
 ### Microsoft COCO Dataset [4]
 
-It is a publicly available dataset of images with their captions. We canl use a subset of those images to train and  test the images.
+It is a publicly available dataset of images with their captions. We can use a subset of those images to train and  test the images.
 
+## Evaluation Metrics
+For evaluation we are using the same metrics as used in the original paper (stated below). We will be comparing our results with that of the original research paper.
+**<ul>
+	<li>Per-pixel accuracy</li>
+	<li>Per-class accuracy</li>
+	<li>Class IOU</li>
+</ul>**
 
-## Links:
+## References:
 
-<ul>
+<ol>
+	<li>pix2pix Research Paper: https://arxiv.org/pdf/1611.07004.pdf</li>
 	<li>CIFAR-10 Dataset: https://www.cs.toronto.edu/~kriz/cifar.html</li>
 	<li>Places-365 Dataset: http://places2.csail.mit.edu/</li>
-	<li>pix2pix Research Paper: https://arxiv.org/pdf/1611.07004.pdf</li>
-	<li>Colorization with GAN Repo: https://github.com/ImagingLab/Colorizing-with-GANs</li>
+	<li>Microsoft COCO: http://cocodataset.org/</li>
 	<li>Official pix2pix Repo: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix</li>
+	<li>Colorization with GAN Repo: https://github.com/ImagingLab/Colorizing-with-GANs</li>
 	<li>PyTorch Website: https://pytorch.org/</li>
-</ul>
+</ol>
 
 ## Tutorials:
 <ul>
