@@ -32,11 +32,9 @@ It is a publicly available dataset of images with their captions. We can use a s
 
 ## Evaluation Metrics
 For evaluation we are using the same metrics as used in the original paper (stated below). We will be comparing our results with that of the original research paper.
-**<ul>
-	<li>Per-pixel accuracy</li>
-	<li>Per-class accuracy</li>
-	<li>Class IOU</li>
-</ul>**
+### Per-pixel accuracy
+### Per-class accuracy
+### Class IOU
 
 ## References:
 
