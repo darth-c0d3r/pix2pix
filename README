@@ -5,6 +5,7 @@ Places-365 Dataset: http://places2.csail.mit.edu/
 pix2pix Research Paper: https://arxiv.org/pdf/1611.07004.pdf
 Colorization with GAN Repo: https://github.com/ImagingLab/Colorizing-with-GANs
 Official pix2pix Repo: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+GAN Hacks Repo: https://github.com/soumith/ganhacks
 PyTorch Website: https://pytorch.org/
 
 Tutorials:
@@ -12,3 +13,4 @@ Intro to GANs: https://medium.freecodecamp.org/an-intuitive-introduction-to-gene
 Generative Models (Stanford): https://www.youtube.com/watch?v=5WoItGTWV54&index=13&list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv
 GANs in PyTorch (Simple): https://medium.com/@devnag/generative-adversarial-networks-gans-in-50-lines-of-code-pytorch-e81b79659e3f
 GANs in PyTorch (Official): https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
+pix2pix Tutorial: https://towardsdatascience.com/cyclegans-and-pix2pix-5e6a5f0159c4
