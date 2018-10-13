@@ -29,7 +29,7 @@ class EncoderDecoderGenerator(nn.Module):
 		conv.reverse()
 		
 		for i in range(len(conv)-1):
-			self.conv_layers.append(nn.ConvTranspose2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			self.deconv_layers.append(nn.ConvTranspose2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 
 
