@@ -21,7 +21,7 @@ class DiscriminatorNetwork(nn.Module):
 		self.conv_layers = nn.ModuleList()
 
 		for i in range(len(conv)-1):
-			superlf.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 
 		self.output_layer = nn.Conv2d(conv[-1], 1, kernel_size=self.kernel_size, padding=self.padding)
