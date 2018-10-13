@@ -6,10 +6,10 @@ from collections import OrderedDict
 import numpy as np
 import torch.nn.functional as F
 
-class Descriminator(nn.Module):
+class DiscriminatorNetwork(nn.Module):
 
 	def __init__(self, conv):
-		super(c_nn, self).__init__()
+		super(DiscriminatorNetwork, self).__init__()
 
 		# model parameters
 		self.kernel_size = 3
@@ -21,8 +21,10 @@ class Descriminator(nn.Module):
 		self.conv_layers = nn.ModuleList()
 
 		for i in range(len(conv)-1):
-			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			superlf.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
+
+		self.output_layer = nn.Conv2d(conv[-1], 1, kernel_size=self.kernel_size, padding=self.padding)
 
 	def forward(self, x):
 
@@ -34,6 +36,7 @@ class Descriminator(nn.Module):
 			x = self.batchnorm_layers[batchnorm_index](x)
 			batchnorm_index += 1
 
+		x = self.output_layer(x)
 		x = F.sigmoid(x)
 
 		return x

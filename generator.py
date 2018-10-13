@@ -6,13 +6,12 @@ from collections import OrderedDict
 import numpy as np
 import torch.nn.functional as F
 
-class EncoderDecoderGenerator(nn.Module):
+class EncoderDecoderNetwork(nn.Module):
 
-	def __init__(self, size, conv):
-		super(c_nn, self).__init__()
+	def __init__(self, conv):
+		super(EncoderDecoderNetwork, self).__init__()
 
 		# model parameters
-		self.input_size = size
 		self.kernel_size = 3
 		self.padding = 1
 		self.dropout = 0.5

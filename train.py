@@ -4,27 +4,22 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision # for data
-# import c_nn_hard_routing
-# import c_nn_stochastic_routing
-import model
+import generator
+import discriminator
 import time
 
 # hyper-parameters
 batch_size = 128
-feat_dropout = 0.5
 epochs = 20
 report_every = 16
-conv = [1,32,64]
-tree = [60,20]
-fc = []
-n_children = 3
-n_pass = 1
+conv_gen = [3,32,64] # start with 3 if input image is RGB
+conv_dis = [6,32,64] # start with 6 if input image is RGB
+size = 256
+gen_lambda = 100.0
 
 # change gpuid to use GPU
 cuda = 0 
 gpuid = -1
-n_class = 10
-size = 28
 
 # return normalized dataset divided into two sets
 def prepare_db():
@@ -41,13 +36,19 @@ def prepare_db():
 											   ]))
 	return {'train':train_dataset,'eval':eval_dataset}
 
-# model = c_nn_stochastic_routing.c_nn(size, conv, tree, fc, n_class, n_children, feat_dropout)
-model = model.c_nn(size, conv, tree, fc, n_class, n_children, n_pass, feat_dropout)
-criterion = nn.CrossEntropyLoss()
-# optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-optimizer = optim.Adagrad(model.parameters(), lr=0.01)
+gen = generator.EncoderDecoderNetwork(conv_gen)
+dis = discriminator.DiscriminatorNetwork(conv_dis)
 
-def train(model, optim, db, filename):
+cGAN_loss = nn.BCELoss()
+L1_loss = nn.L1Loss()
+
+gen_optimizer = optim.Adagrad(gen.parameters(), lr=0.01)
+dis_optimizer = optim.Adagrad(dis.parameters(), lr=0.01)
+
+def train():
+
+	gen.train()
+	dis.train()
 
 	time_start = time.time()
 
@@ -56,51 +57,44 @@ def train(model, optim, db, filename):
 		train_loader = torch.utils.data.DataLoader(db['train'],batch_size=batch_size, shuffle=True)
 
 		# Update (Train)
-		model.train()
 		for batch_idx, (data, target) in enumerate(train_loader):
 
 			data, target = Variable(data), Variable(target)
-			optimizer.zero_grad()
-			output = model(data)
-			loss = criterion(output,target)
-			loss.backward()
-			optimizer.step()
+
+			# train discriminator
+			dis.zero_grad()
+
+			dis_result = dis(data, target).squeeze()
+			dis_real_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size())))
+
+			gen_result = gen(data)
+			dis_result = dis(data, gen_result)
+			dis_fake_loss = cGAN_loss(dis_result, Variable(torch.zeros(dis_result.size())))
+
+			dis_train_loss = (dis_real_loss + dis_fake_loss)/2.0
+			dis_train_loss.backward()
+			dis_optimizer.step()
+
+			# train generator
+			gen.zero_grad()
+
+			gen_result = gen(data)
+			dis_result = dis(data, gen_result).squeeze()
+
+			gen_train_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()))) +
+								gen_lambda * L1_loss(gen_result, target)
+			gen_train_loss.backward()
+			gen_optimizer.step()
 
 			if batch_idx % report_every == 0:
-				print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-					epoch, batch_idx * len(data), len(train_loader.dataset),
-					100. * batch_idx / len(train_loader), loss.item()))
-
-
-		# Evaluate
-		model.eval()
-		test_loss = float(0)
-		correct = 0
-		test_loader = torch.utils.data.DataLoader(db['eval'], batch_size=batch_size, shuffle=True)
-		for data, target in test_loader:
-			with torch.no_grad():
-				data= Variable(data)
-			target = Variable(target)
-			output = model(data)
-			test_loss += criterion(output, target).item() # sum up batch loss
-			pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
-			correct += pred.eq(target.data.view_as(pred)).cpu().sum()
-
-		# test_loss /= len(test_loader.dataset)
-		accuracy = float(correct) / len(test_loader.dataset)
-
-		print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(
-			test_loss, correct, len(test_loader.dataset),
-			accuracy))
-		with open(filename, 'a+') as f:
-			f.write(str(epoch)+" "+str(time.time()-time_start)+" "+str(test_loss)+" "+str(accuracy)+"\n")
-					
+				print('Train Epoch: {} \t GenLoss: {:.6f} \t DisRealLoss: {:.6f}\
+				 \t DisFakeLoss: {:.6f} \t DisTotalLoss: {:.6f}'.
+					format(epoch, dis_real_loss, dis_fake_loss, dis_train_loss))			
 
 def main():
 	db = prepare_db()
-	filename = "c_nn_hard_routing_3_1.dat"
-	train(model, optim, db, filename)
+	train()
 
 
 if __name__ == '__main__':
-	main()
+	main()	
