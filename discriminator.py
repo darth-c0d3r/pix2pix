@@ -26,7 +26,8 @@ class DiscriminatorNetwork(nn.Module):
 
 		self.output_layer = nn.Conv2d(conv[-1], 1, kernel_size=self.kernel_size, padding=self.padding)
 
-	def forward(self, x):
+	def forward(self, x, y):
+		x = torch.cat([x,y],1)
 
 		batchnorm_index = 0
 
@@ -37,6 +38,6 @@ class DiscriminatorNetwork(nn.Module):
 			batchnorm_index += 1
 
 		x = self.output_layer(x)
-		x = F.sigmoid(x)
+		x = torch.sigmoid(x)
 
 		return x

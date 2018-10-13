@@ -9,7 +9,7 @@ class SampleDataset(Dataset):
 		self.total = total
 
 	def __len__(self):
-		return self.total
+		return int(self.total)
 
 	def __getitem__(self, idx):
 		data = torch.FloatTensor(3,self.img_size,self.img_size).uniform_(-1,0)

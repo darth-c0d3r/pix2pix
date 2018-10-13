@@ -48,6 +48,6 @@ class EncoderDecoderNetwork(nn.Module):
 			x = self.batchnorm_layers[batchnorm_index](x)
 			batchnorm_index += 1
 
-		x = F.tanh(x)
+		x = torch.tanh(x)
 
 		return x

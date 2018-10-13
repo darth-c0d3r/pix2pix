@@ -77,12 +77,15 @@ def train(db):
 			if batch_idx % report_every == 0:
 				print('Train Epoch: {} \t GenLoss: {:.6f} \t DisRealLoss: {:.6f}\
 				 \t DisFakeLoss: {:.6f} \t DisTotalLoss: {:.6f}'.
-					format(epoch, dis_real_loss, dis_fake_loss, dis_train_loss))			
+					format(epoch, gen_train_loss, dis_real_loss, dis_fake_loss, dis_train_loss))
+
+	torch.save(gen, 'generator_model.pt')
+	torch.save(dis, 'discriminator_model.pt')
 
 def main():
 	db = dataset.getDataset(image_size,0.8*total_images,0.2*total_images)
-	print(db['train'][0])
-	# train(db)
+	# print(db['train'][0])
+	train(db)
 
 
 if __name__ == '__main__':
