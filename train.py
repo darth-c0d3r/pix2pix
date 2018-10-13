@@ -11,7 +11,7 @@ import dataset
 
 # hyper-parameters
 batch_size = 4
-epochs = 20
+epochs = 200
 report_every = 16
 conv_gen = [3,32,64] # start with 3 if input image is RGB
 conv_dis = [6,32,64] # start with 6 if input image is RGB
@@ -19,7 +19,7 @@ size = 256
 gen_lambda = 100.0
 
 total_images = 100
-image_size = 50
+image_size = 5
 
 # change gpuid to use GPU
 cuda = 0 

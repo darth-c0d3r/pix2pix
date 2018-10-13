@@ -12,7 +12,7 @@ class SampleDataset(Dataset):
 		return int(self.total)
 
 	def __getitem__(self, idx):
-		data = torch.FloatTensor(3,self.img_size,self.img_size).uniform_(-1,0)
+		data = torch.FloatTensor(1,self.img_size,self.img_size).uniform_(-1,0)
 		sample = (data,-data)
 		return sample
 
