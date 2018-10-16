@@ -80,8 +80,8 @@ def train(db):
 				 \t DisFakeLoss: {:.6f} \t DisTotalLoss: {:.6f}'.
 					format(epoch, gen_train_loss, dis_real_loss, dis_fake_loss, dis_train_loss))
 
-	torch.save(gen, 'generator_model.pt')
-	torch.save(dis, 'discriminator_model.pt')
+	torch.save(gen, 'saved_models/generator_model.pt')
+	torch.save(dis, 'saved_models/discriminator_model.pt')
 
 def main():
 	db = dataset.getDataset(image_size,0.8*total_images,0.2*total_images)
