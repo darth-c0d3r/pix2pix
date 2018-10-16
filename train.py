@@ -13,10 +13,10 @@ import dataset
 batch_size = 4
 epochs = 200
 report_every = 16
-conv_gen = [3,32,64] # start with 3 if input image is RGB
-conv_dis = [6,32,64] # start with 6 if input image is RGB
+conv_gen = [1,32,64] # start with 3 if input image is RGB
+conv_dis = [2,32,64] # start with 6 if input image is RGB
 size = 256
-gen_lambda = 100.0
+gen_lambda = 1.0
 
 total_images = 100
 image_size = 5
@@ -26,6 +26,7 @@ cuda = 0
 gpuid = -1
 
 gen = generator.EncoderDecoderNetwork(conv_gen)
+# gen = generator.UNetNetwork(conv_gen)
 dis = discriminator.DiscriminatorNetwork(conv_dis)
 
 cGAN_loss = nn.BCELoss()
