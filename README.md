@@ -44,8 +44,6 @@ For evaluation we are using the same metrics as used in the original paper (stat
 	<li>Places-365 Dataset: http://places2.csail.mit.edu/</li>
 	<li>Microsoft COCO: http://cocodataset.org/</li>
 	<li>Official pix2pix Repo: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix</li>
-	<li>Colorization with GAN Repo: https://github.com/ImagingLab/Colorizing-with-GANs</li>
-	<li>GAN Hacks Repo: https://github.com/soumith/ganhacks</li>
 	<li>PyTorch Website: https://pytorch.org/</li>
 </ol>
 
@@ -56,4 +54,7 @@ For evaluation we are using the same metrics as used in the original paper (stat
 	<li>GANs in PyTorch (Simple): https://medium.com/@devnag/generative-adversarial-networks-gans-in-50-lines-of-code-pytorch-e81b79659e3f</li>
 	<li>GANs in PyTorch (Official): https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html</li>
 	<li>pix2pix Tutorial: https://towardsdatascience.com/cyclegans-and-pix2pix-5e6a5f0159c4</li>
+	<li>Colorization with GAN Repo: https://github.com/ImagingLab/Colorizing-with-GANs</li>
+	<li>GAN Hacks Repo: https://github.com/soumith/ganhacks</li>
+	<li>Installing CUDA 9.0: https://gist.github.com/zhanwenchen/e520767a409325d9961072f666815bb8</li>
 </ul>
