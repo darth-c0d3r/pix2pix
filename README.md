@@ -57,4 +57,5 @@ For evaluation we are using the same metrics as used in the original paper (stat
 	<li>Colorization with GAN Repo: https://github.com/ImagingLab/Colorizing-with-GANs</li>
 	<li>GAN Hacks Repo: https://github.com/soumith/ganhacks</li>
 	<li>Installing CUDA 9.0: https://gist.github.com/zhanwenchen/e520767a409325d9961072f666815bb8</li>
+	<li>PyTorch Examples: https://cs230-stanford.github.io/pytorch-getting-started.html</li>
 </ul>

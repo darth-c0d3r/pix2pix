@@ -21,16 +21,18 @@ gen_lambda = 1.0
 total_images = 100
 image_size = 5
 
-# change gpuid to use GPU
-cuda = 0 
-gpuid = -1
+# GPU replated info
+cuda = 1
+gpu_id = 0
+device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
+print(device)
 
-gen = generator.EncoderDecoderNetwork(conv_gen)
+gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
 # gen = generator.UNetNetwork(conv_gen)
-dis = discriminator.DiscriminatorNetwork(conv_dis)
+dis = discriminator.DiscriminatorNetwork(conv_dis).to(device)
 
-cGAN_loss = nn.BCELoss()
-L1_loss = nn.L1Loss()
+cGAN_loss = nn.BCELoss().to(device)
+L1_loss = nn.L1Loss().to(device)
 
 gen_optimizer = optim.Adagrad(gen.parameters(), lr=0.01)
 dis_optimizer = optim.Adagrad(dis.parameters(), lr=0.01)
@@ -49,17 +51,17 @@ def train(db):
 		# Update (Train)
 		for batch_idx, (data, target) in enumerate(train_loader):
 
-			data, target = Variable(data), Variable(target)
+			data, target = Variable(data.to(device)), Variable(target.to(device))
 
 			# train discriminator
 			dis.zero_grad()
 
 			dis_result = dis(data, target).squeeze()
-			dis_real_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size())))
+			dis_real_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()).to(device)))
 
 			gen_result = gen(data)
 			dis_result = dis(data, gen_result)
-			dis_fake_loss = cGAN_loss(dis_result, Variable(torch.zeros(dis_result.size())))
+			dis_fake_loss = cGAN_loss(dis_result, Variable(torch.zeros(dis_result.size()).to(device)))
 
 			dis_train_loss = (dis_real_loss + dis_fake_loss)/2.0
 			dis_train_loss.backward()
@@ -71,7 +73,7 @@ def train(db):
 			gen_result = gen(data)
 			dis_result = dis(data, gen_result).squeeze()
 
-			gen_train_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()))) + gen_lambda * L1_loss(gen_result, target)
+			gen_train_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()).to(device))) + gen_lambda * L1_loss(gen_result, target)
 			gen_train_loss.backward()
 			gen_optimizer.step()
 
