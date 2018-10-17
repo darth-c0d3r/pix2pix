@@ -7,14 +7,14 @@ import torchvision # for data
 import generator
 import discriminator
 import time
-import dataset
+import datasets.bnw2color.get_dataset as dataset
 
 # hyper-parameters
 batch_size = 4
-epochs = 200
+epochs = 20
 report_every = 16
-conv_gen = [1,32,64] # start with 3 if input image is RGB
-conv_dis = [2,32,64] # start with 6 if input image is RGB
+conv_gen = [3,32,64] # start with 3 if input image is RGB
+conv_dis = [6,32,64] # start with 6 if input image is RGB
 size = 256
 gen_lambda = 1.0
 
@@ -28,7 +28,7 @@ device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda 
 print(device)
 
 gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
-# gen = generator.UNetNetwork(conv_gen)
+# gen = generator.UNetNetwork(conv_gen).to(device)
 dis = discriminator.DiscriminatorNetwork(conv_dis).to(device)
 
 cGAN_loss = nn.BCELoss().to(device)
@@ -86,7 +86,7 @@ def train(db):
 	torch.save(dis, 'saved_models/discriminator_model.pt')
 
 def main():
-	db = dataset.getDataset(image_size,0.8*total_images,0.2*total_images)
+	db = dataset.getDataset("datasets/bnw2color/Opencountry", 401)
 	# print(db['train'][0])
 	train(db)
 
