@@ -22,7 +22,7 @@ gen_lambda = 1.0
 cuda = 1
 gpu_id = 0
 device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
-print(device)
+print("Device: ", device)
 
 gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
 # gen = generator.UNetNetwork(conv_gen).to(device)
@@ -31,8 +31,8 @@ dis = discriminator.DiscriminatorNetwork(conv_dis).to(device)
 cGAN_loss = nn.BCELoss().to(device)
 L1_loss = nn.L1Loss().to(device)
 
-gen_optimizer = optim.Adagrad(gen.parameters(), lr=0.01)
-dis_optimizer = optim.Adagrad(dis.parameters(), lr=0.01)
+gen_optimizer = optim.Adagrad(gen.parameters(), lr=0.001)
+dis_optimizer = optim.Adagrad(dis.parameters(), lr=0.001)
 
 def train(db):
 

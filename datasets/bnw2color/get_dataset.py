@@ -23,6 +23,6 @@ class MyDataset(Dataset):
 def getDataset(dataset_name):
 	train = MyDataset(root_dir=dataset_name+"/train/")
 	test = MyDataset(root_dir=dataset_name+"/test/")
-	eval = MyDataset(root_dir=dataset_name+"/eval/")
+	eval_ = MyDataset(root_dir=dataset_name+"/eval/")
 
-	return {'train': train, 'test': test, 'eval': eval} 
+	return {'train': train, 'test': test, 'eval': eval_} 
