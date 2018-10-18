@@ -25,19 +25,25 @@ with torch.no_grad():
 	tensor = tensor.view(tensor.shape[1],tensor.shape[2],tensor.shape[3])
 	output = output.view(output.shape[1],output.shape[2],output.shape[3])
 
-	tensor_image = np.zeros([tensor.shape[1], tensor.shape[2], tensor.shape[0]])
-	for i in range(0,tensor.shape[1]):
-		for j in range(0,tensor.shape[2]):
-			tensor_image[i][j][0] = tensor[0][i][j]
-			tensor_image[i][j][1] = tensor[1][i][j]
-			tensor_image[i][j][2] = tensor[2][i][j]
+	# tensor_image = np.zeros([tensor.shape[1], tensor.shape[2], tensor.shape[0]])
+	# for i in range(0,tensor.shape[1]):
+	# 	for j in range(0,tensor.shape[2]):
+	# 		tensor_image[i][j][0] = tensor[0][i][j]
+	# 		tensor_image[i][j][1] = tensor[1][i][j]
+	# 		tensor_image[i][j][2] = tensor[2][i][j]
+	
+	tensor_image = np.array(torchvision.transforms.ToPILImage(tensor).convert('RGB'))
+	tensor_image = tensor_image[:,:,::-1].copy()
 
-	output_image = np.zeros([output.shape[1], output.shape[2], output.shape[0]])
-	for i in range(0,output.shape[1]):
-		for j in range(0,output.shape[2]):
-			output_image[i][j][0] = output[0][i][j]
-			output_image[i][j][1] = output[1][i][j]
-			output_image[i][j][2] = output[2][i][j]
+	# output_image = np.zeros([output.shape[1], output.shape[2], output.shape[0]])
+	# for i in range(0,output.shape[1]):
+	# 	for j in range(0,output.shape[2]):
+	# 		output_image[i][j][0] = output[0][i][j]
+	# 		output_image[i][j][1] = output[1][i][j]
+	# 		output_image[i][j][2] = output[2][i][j]
+
+	output_image = np.array(torchvision.transforms.ToPILImage(output).convert('RGB'))
+	output_image = output_image[:,:,::-1].copy()
 
 	cv2.imwrite("tensor.jpg", tensor_image)
 	cv2.imwrite("output.jpg", output_image)

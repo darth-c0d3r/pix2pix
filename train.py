@@ -18,10 +18,7 @@ conv_dis = [6,32,64] # start with 6 if input image is RGB
 size = 256
 gen_lambda = 1.0
 
-total_images = 100
-image_size = 5
-
-# GPU replated info
+# GPU related info
 cuda = 1
 gpu_id = 0
 device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
@@ -86,8 +83,7 @@ def train(db):
 	torch.save(dis, 'saved_models/discriminator_model.pt')
 
 def main():
-	db = dataset.getDataset("datasets/bnw2color/Opencountry", 401)
-	# print(db['train'][0])
+	db = dataset.getDataset("datasets/bnw2color/Opencountry")
 	train(db)
 
 
