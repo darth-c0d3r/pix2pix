@@ -8,7 +8,7 @@ import cv2
 cuda = 1
 gpu_id = 0
 device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
-print("Device: ", device)
+print("Device:", device)
 
 generator = torch.load("saved_models/generator_model.pt").to(device)
 index = 5

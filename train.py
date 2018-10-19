@@ -22,7 +22,7 @@ gen_lambda = 1.0
 cuda = 1
 gpu_id = 0
 device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
-print("Device: ", device)
+print("Device:", device)
 
 gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
 # gen = generator.UNetNetwork(conv_gen).to(device)

@@ -43,6 +43,7 @@ For evaluation we are using the same metrics as used in the original paper (stat
 	<li>CIFAR-10 Dataset: https://www.cs.toronto.edu/~kriz/cifar.html</li>
 	<li>Places-365 Dataset: http://places2.csail.mit.edu/</li>
 	<li>Microsoft COCO: http://cocodataset.org/</li>
+	<li>MIT CVCL Dataset: http://cvcl.mit.edu/database.htm</li>
 	<li>Official pix2pix Repo: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix</li>
 	<li>PyTorch Website: https://pytorch.org/</li>
 </ol>

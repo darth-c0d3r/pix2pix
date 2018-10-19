@@ -13,8 +13,8 @@ files = [file for file in files if file.endswith(".jpg")]
 total = len(files)
 
 # Fraction of dataset to be trained and tested on can be changed here 
-train_frac = int(0.8*total)
-test_frac = int(0.1*total)
+train_frac = int(0.9*total)
+test_frac = int(0.05*total)
 eval_frac = total-train_frac-test_frac
 
 random.shuffle(files)
