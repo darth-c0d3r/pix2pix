@@ -1,6 +1,5 @@
 __pycache__
 *.pt
-datasets/Opencountry/*
-datasets/coast/*
+datasets
 *.jpg
 *.db

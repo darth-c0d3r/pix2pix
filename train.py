@@ -7,7 +7,12 @@ import torchvision # for data
 import generator
 import discriminator
 import time
-import datasets.bnw2color.get_dataset as dataset
+import get_dataset as dataset
+import sys
+# task = "bnw2color"
+# task = "deblur"
+folder = sys.argv[1]
+task = sys.argv[2]
 
 # hyper-parameters
 batch_size = 4
@@ -79,11 +84,11 @@ def train(db):
 				 \t DisFakeLoss: {:.6f} \t DisTotalLoss: {:.6f}'.
 					format(epoch, gen_train_loss, dis_real_loss, dis_fake_loss, dis_train_loss))
 
-	torch.save(gen, 'saved_models/generator_model.pt')
-	torch.save(dis, 'saved_models/discriminator_model.pt')
+	torch.save(gen, 'saved_models/generator_model_'+task+'.pt')
+	torch.save(dis, 'saved_models/discriminator_model_'+task+'.pt')
 
 def main():
-	db = dataset.getDataset("datasets/bnw2color/Opencountry")
+	db = dataset.getDataset(folder, task)
 	train(db)
 
 

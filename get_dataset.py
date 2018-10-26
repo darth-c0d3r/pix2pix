@@ -14,15 +14,15 @@ class MyDataset(Dataset):
 
 	def __getitem__(self, idx):
 		inp = Image.open(self.root_dir+"input/"+str(idx+1)+".jpg")
-		out = Image.open(self.root_dir+"output/"+str(idx+1)+".jpg")
+		out = Image.open(self.root_dir+"target/"+str(idx+1)+".jpg")
 		trans = torchvision.transforms.ToTensor()
 		sample = (2.0*(trans(inp)-0.5),2.0*(trans(out)-0.5))
 		return sample
 
 
-def getDataset(dataset_name):
-	train = MyDataset(root_dir=dataset_name+"/train/")
-	test = MyDataset(root_dir=dataset_name+"/test/")
-	eval_ = MyDataset(root_dir=dataset_name+"/eval/")
+def getDataset(dataset_name, task):
+	train = MyDataset(root_dir="datasets/"+dataset_name+"/train_"+task+"/")
+	test = MyDataset(root_dir="datasets/"+dataset_name+"/test_"+task+"/")
+	eval_ = MyDataset(root_dir="datasets/"+dataset_name+"/eval_"+task+"/")
 
 	return {'train': train, 'test': test, 'eval': eval_} 
