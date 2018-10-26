@@ -9,8 +9,7 @@ import discriminator
 import time
 import get_dataset as dataset
 import sys
-# task = "bnw2color"
-# task = "deblur"
+
 folder = sys.argv[1]
 task = sys.argv[2]
 

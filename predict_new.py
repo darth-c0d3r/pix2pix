@@ -11,11 +11,13 @@ gpu_id = 0
 device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
 print("Device:", device)
 
-task = "deblur"
+
+folder = sys.argv[1]
+task = sys.argv[2]
 
 generator = torch.load("saved_models/generator_model_"+task+".pt").to(device)
-root_dir_input = "datasets/coast/eval_"+task+"/input/"
-root_dir_output = "datasets/coast/eval_"+task+"/output/"
+root_dir_input = "datasets/"+folder+"/eval_"+task+"/input/"
+root_dir_output = "datasets/"+folder+"/eval_"+task+"/output/"
 files = os.listdir(root_dir_input)
 
 with torch.no_grad():
