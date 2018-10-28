@@ -30,10 +30,10 @@ os.mkdir(folder+"/train_"+task+"/input/")
 os.mkdir(folder+"/train_"+task+"/target/")
 os.mkdir(folder+"/test_"+task+"/input/")
 os.mkdir(folder+"/test_"+task+"/target/")
-os.mkdir(folder+"/test_"+task+"/eval/")
+os.mkdir(folder+"/test_"+task+"/output/")
 os.mkdir(folder+"/eval_"+task+"/input/")
 os.mkdir(folder+"/eval_"+task+"/target/")
-os.mkdir(folder+"/eval_"+task+"/eval/")
+os.mkdir(folder+"/eval_"+task+"/output/")
 
 index = 1
 for file in files:

@@ -17,8 +17,8 @@ task = sys.argv[2]
 batch_size = 4
 epochs = 20
 report_every = 16
-conv_gen = [3,32,64] # start with 3 if input image is RGB
-conv_dis = [6,32,64] # start with 6 if input image is RGB
+conv_gen = [3,16,32,64,128,256] # start with 3 if input image is RGB
+conv_dis = [6,16,32,64,128,256] # start with 6 if input image is RGB
 size = 256
 gen_lambda = 1.0
 
