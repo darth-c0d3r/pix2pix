@@ -33,7 +33,7 @@ class DiscriminatorNetwork(nn.Module):
 
 		# convolutional layers
 		for conv_layer in self.conv_layers:
-			x = F.relu(conv_layer(x))
+			x = F.leaky_relu(conv_layer(x), self.leaky_relu_slope)
 			x = self.batchnorm_layers[batchnorm_index](x)
 			batchnorm_index += 1
 

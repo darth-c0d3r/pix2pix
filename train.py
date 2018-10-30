@@ -15,12 +15,12 @@ task = sys.argv[2]
 
 # hyper-parameters
 batch_size = 4
-epochs = 20
+epochs = 50
 report_every = 16
-conv_gen = [3,16,32,64,128,256] # start with 3 if input image is RGB
+conv_gen = [3,16,32,64,128,256,512] # start with 3 if input image is RGB
 conv_dis = [6,16,32,64,128,256] # start with 6 if input image is RGB
 size = 256
-gen_lambda = 1.0
+gen_lambda = 10.0
 
 # GPU related info
 cuda = 1
@@ -28,15 +28,17 @@ gpu_id = 0
 device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
 print("Device:", device)
 
-gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
-# gen = generator.UNetNetwork(conv_gen).to(device)
+# gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
+gen = generator.UNetNetwork(conv_gen).to(device)
 dis = discriminator.DiscriminatorNetwork(conv_dis).to(device)
 
 cGAN_loss = nn.BCELoss().to(device)
 L1_loss = nn.L1Loss().to(device)
 
-gen_optimizer = optim.Adagrad(gen.parameters(), lr=0.001)
-dis_optimizer = optim.Adagrad(dis.parameters(), lr=0.001)
+gen_optimizer = optim.Adam(gen.parameters(), lr=0.0002, betas=(0.5, 0.999))
+dis_optimizer = optim.Adam(dis.parameters(), lr=0.0002, betas=(0.5, 0.999))
+# gen_optimizer = optim.Adagrad(gen.parameters(), lr=0.001)
+# dis_optimizer = optim.Adagrad(dis.parameters(), lr=0.001)
 
 def train(db):
 
