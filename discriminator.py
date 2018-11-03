@@ -12,7 +12,8 @@ class DiscriminatorNetwork(nn.Module):
 		super(DiscriminatorNetwork, self).__init__()
 
 		# model parameters
-		self.kernel_size = 3
+		self.kernel_size = 4
+		self.stride = 2
 		self.padding = 1
 		self.dropout = 0.5
 		self.leaky_relu_slope = 0.2
@@ -21,10 +22,10 @@ class DiscriminatorNetwork(nn.Module):
 		self.conv_layers = nn.ModuleList()
 
 		for i in range(len(conv)-1):
-			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, stride=self.stride, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 
-		self.output_layer = nn.Conv2d(conv[-1], 1, kernel_size=self.kernel_size, padding=self.padding)
+		self.output_layer = nn.Conv2d(conv[-1], 1, kernel_size=self.kernel_size, stride=self.stride, padding=self.padding)
 
 	def forward(self, x, y):
 		x = torch.cat([x,y],1)
@@ -33,8 +34,9 @@ class DiscriminatorNetwork(nn.Module):
 
 		# convolutional layers
 		for conv_layer in self.conv_layers:
-			x = F.leaky_relu(conv_layer(x), self.leaky_relu_slope)
+			x = conv_layer(x)
 			x = self.batchnorm_layers[batchnorm_index](x)
+			x = F.leaky_relu(x, self.leaky_relu_slope)
 			batchnorm_index += 1
 
 		x = self.output_layer(x)

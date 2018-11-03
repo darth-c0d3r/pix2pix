@@ -12,7 +12,8 @@ class EncoderDecoderNetwork(nn.Module):
 		super(EncoderDecoderNetwork, self).__init__()
 
 		# model parameters
-		self.kernel_size = 3
+		self.kernel_size = 4
+		self.stride = 2	
 		self.padding = 1
 		self.dropout = 0.5
 		self.leaky_relu_slope = 0.2
@@ -22,13 +23,13 @@ class EncoderDecoderNetwork(nn.Module):
 		self.deconv_layers = nn.ModuleList()
 
 		for i in range(len(conv)-1):
-			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, stride=self.stride, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 
 		conv.reverse()
 		
 		for i in range(len(conv)-1):
-			self.deconv_layers.append(nn.ConvTranspose2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			self.deconv_layers.append(nn.ConvTranspose2d(conv[i], conv[i+1], kernel_size=self.kernel_size, stride=self.stride, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 
 		# last batchnorm layer is redundant as it is not used
@@ -60,7 +61,8 @@ class UNetNetwork(nn.Module):
 		super(UNetNetwork, self).__init__()
 
 		# model parameters
-		self.kernel_size = 3
+		self.kernel_size = 4
+		self.stride = 2
 		self.padding = 1
 		self.dropout = 0.5
 		self.leaky_relu_slope = 0.2
@@ -70,13 +72,13 @@ class UNetNetwork(nn.Module):
 		self.deconv_layers = nn.ModuleList()
 
 		for i in range(len(conv)-1):
-			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.kernel_size, stride=self.stride, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 
 		conv.reverse()
 		
 		for i in range(len(conv)-1):
-			self.deconv_layers.append(nn.ConvTranspose2d(2*conv[i], conv[i+1], kernel_size=self.kernel_size, padding=self.padding))
+			self.deconv_layers.append(nn.ConvTranspose2d(2*conv[i], conv[i+1], kernel_size=self.kernel_size, stride=self.stride, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 
 		# last batchnorm layer is redundant as it is not used
