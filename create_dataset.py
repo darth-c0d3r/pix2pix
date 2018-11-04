@@ -43,7 +43,8 @@ for file in files:
 		out = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 		out = cv2.cvtColor(out,cv2.COLOR_GRAY2RGB)
 	elif task == "deblur":
-		out = cv2.blur(img,(5,5))
+		kernel = np.ones((5,5),np.float32)/25
+		out = cv2.filter2D(img,-1,kernel)
 
 	if index <= train_frac:
 		cv2.imwrite(folder+"/train_"+task+"/input/"+str(index)+".jpg", out)
