@@ -42,17 +42,13 @@ class EncoderDecoderNetwork(nn.Module):
 		# convolutional layers
 		for conv_layer in self.conv_layers:
 			x = conv_layer(x)
-			x = self.batchnorm_layers[batchnorm_index](x)
-			# x = F.dropout(x,self.dropout) # add drop-out here if needed
-			x = F.leaky_relu(x, self.leaky_relu_slope)
+			x = F.leaky_relu(self.batchnorm_layers[batchnorm_index](x), self.leaky_relu_slope)
 			batchnorm_index += 1
 
 		# deconvolutional layers
 		for deconv_layer in self.deconv_layers[:-1]:
-			x = deconv_layer(x)
-			x = self.batchnorm_layers[batchnorm_index](x)
-			x = F.dropout(x,self.dropout) # add drop-out here if needed
-			x = F.leaky_relu(x, self.leaky_relu_slope)
+			x = deconv_layer(x) # add drop-out here if needed
+			x = F.relu(self.batchnorm_layers[batchnorm_index](x))
 			batchnorm_index += 1
 
 		x = torch.tanh(self.deconv_layers[-1](x))
@@ -79,6 +75,8 @@ class UNetNetwork(nn.Module):
 		self.padding = 1
 		self.dropout = 0.5
 		self.leaky_relu_slope = 0.2
+		self.weight_mean = 0
+		self.weight_std = 0.02
 
 		self.batchnorm_layers = nn.ModuleList()
 		self.conv_layers = nn.ModuleList()
@@ -93,6 +91,8 @@ class UNetNetwork(nn.Module):
 		for i in range(len(conv)-1):
 			self.deconv_layers.append(nn.ConvTranspose2d(2*conv[i], conv[i+1], kernel_size=self.kernel_size, stride=self.stride, padding=self.padding))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
+
+		# normal_init(self.weight_mean, self.weight_std)
 			
 		# last batchnorm layer is redundant as it is not used
 		# another bit of redundancy is that the output of last encoder layer
@@ -108,9 +108,7 @@ class UNetNetwork(nn.Module):
 		# convolutional layers
 		for conv_layer in self.conv_layers:
 			x = conv_layer(x)
-			x = self.batchnorm_layers[batchnorm_index](x)
-			# x = F.dropout(x,self.dropout) # add drop-out here if needed
-			x = F.leaky_relu(x, self.leaky_relu_slope)
+			x = F.leaky_relu(self.batchnorm_layers[batchnorm_index](x), self.leaky_relu_slope)
 			encoder_outputs.append(x)
 			batchnorm_index += 1
 
@@ -119,9 +117,8 @@ class UNetNetwork(nn.Module):
 		for deconv_layer in self.deconv_layers[:-1]:
 			x = torch.cat([x, encoder_outputs[deconv_index]], 1)
 			x = deconv_layer(x)
-			x = self.batchnorm_layers[batchnorm_index](x)
-			x = F.dropout(x,self.dropout) # add drop-out here if needed
-			x = F.leaky_relu(x, self.leaky_relu_slope)
+			x = F.dropout(x,0.5) # add drop-out here if needed
+			x = F.leaky_relu(self.batchnorm_layers[batchnorm_index](x), self.leaky_relu_slope)
 			batchnorm_index += 1
 			deconv_index -= 1
 

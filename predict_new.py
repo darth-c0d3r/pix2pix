@@ -4,6 +4,7 @@ import torchvision
 import numpy as np
 from PIL import Image
 import cv2
+import matplotlib.pyplot as plt
 import os
 
 cuda = 1
@@ -15,7 +16,7 @@ print("Device:", device)
 folder = sys.argv[1]
 task = sys.argv[2]
 
-generator = torch.load("saved_models/generator_model_"+task+".pt").to(device)
+generator = torch.load("saved_models/saved_models/generator_model_"+task+"_96.pt", map_location='cpu').to(device)
 generator.eval()
 root_dir_input = "datasets/"+folder+"/eval_"+task+"/input/"
 root_dir_output = "datasets/"+folder+"/eval_"+task+"/output/"
@@ -27,8 +28,8 @@ with torch.no_grad():
 		trans = torchvision.transforms.ToTensor()
 		tensor = 2.0*(trans(inp)-0.5).to(device)
 		tensor = tensor.view(1,tensor.shape[0],tensor.shape[1],tensor.shape[2])
-		output = ((generator(tensor)/2.0)+0.5)*255
-		tensor = ((tensor/2.0)+0.5)*255
+		output = ((generator(tensor)/2.0)+0.5)
+		tensor = ((tensor/2.0)+0.5)
 
 		tensor = tensor.view(tensor.shape[1],tensor.shape[2],tensor.shape[3])
 		output = output.view(output.shape[1],output.shape[2],output.shape[3])
@@ -54,6 +55,8 @@ with torch.no_grad():
 		# output_image = np.array(trans1(output.cpu()).convert('RGB'))
 		# output_image = output_image[:,:,::-1].copy()
 
+		plt.imshow(output_image)
+		plt.show()
 		cv2.imwrite(root_dir_output+file, tensor_image)
 		cv2.imwrite(root_dir_output+file, output_image)
 		print("Image %s done" % (file))

@@ -17,6 +17,8 @@ class DiscriminatorNetwork(nn.Module):
 		self.padding = 1
 		self.dropout = 0.5
 		self.leaky_relu_slope = 0.2
+		self.weight_mean = 0
+		self.weight_std = 0.02
 
 		self.batchnorm_layers = nn.ModuleList()
 		self.conv_layers = nn.ModuleList()
@@ -28,6 +30,9 @@ class DiscriminatorNetwork(nn.Module):
 
 		self.output_layer = nn.Conv2d(conv[-1], 1, kernel_size=self.kernel_size, stride=self.stride, padding=self.padding)
 
+		# normal_init(self.weight_mean, self.weight_std)
+
+
 	def forward(self, x, y):
 		x = torch.cat([x,y],1)
 
@@ -37,7 +42,6 @@ class DiscriminatorNetwork(nn.Module):
 		for conv_layer in self.conv_layers:
 			x = conv_layer(x)
 			x = self.batchnorm_layers[batchnorm_index](x)
-			# x = F.dropout(x, self.dropout) # add drop-out here if needed
 			x = F.leaky_relu(x, self.leaky_relu_slope)
 			batchnorm_index += 1
 
