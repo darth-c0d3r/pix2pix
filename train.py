@@ -15,12 +15,14 @@ task = sys.argv[2]
 
 # hyper-parameters
 batch_size = 4
-epochs = 50
+epochs = 100
 report_every = 16
-conv_gen = [3,16,32,64,128,256,512] # start with 3 if input image is RGB
+conv_gen = [3,16,32,64,128,256,512,512] # start with 3 if input image is RGB
 conv_dis = [6,16,32,64,128,256] # start with 6 if input image is RGB
 size = 256
-gen_lambda = 10.0
+gen_lambda = 75.0
+dis_train_per_epoch = 1
+gen_train_per_epoch = 1
 
 # GPU related info
 cuda = 1
@@ -28,12 +30,13 @@ gpu_id = 0
 device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
 print("Device:", device)
 
-# gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
-gen = generator.UNetNetwork(conv_gen).to(device)
+gen = generator.EncoderDecoderNetwork(conv_gen).to(device)
+# gen = generator.UNetNetwork(conv_gen).to(device)
 dis = discriminator.DiscriminatorNetwork(conv_dis).to(device)
 
 cGAN_loss = nn.BCELoss().to(device)
 L1_loss = nn.L1Loss().to(device)
+
 
 gen_optimizer = optim.Adam(gen.parameters(), lr=0.0002, betas=(0.5, 0.999))
 dis_optimizer = optim.Adam(dis.parameters(), lr=0.0002, betas=(0.5, 0.999))
@@ -46,6 +49,7 @@ def train(db):
 	dis.train()
 
 	time_start = time.time()
+	batches_done = 0
 
 	for epoch in range(1, epochs+1):
 
@@ -55,32 +59,36 @@ def train(db):
 		for batch_idx, (data, target) in enumerate(train_loader):
 
 			data, target = Variable(data.to(device)), Variable(target.to(device))
+			# print("epoch %d ; batch %d ; shape ;"%(epoch,batch_idx), data.size())
 
 			# train discriminator
-			dis.zero_grad()
+			for _ in range(dis_train_per_epoch):
+				dis.zero_grad()
 
-			dis_result = dis(data, target).squeeze()
-			dis_real_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()).to(device)))
+				dis_result = dis(data, target).squeeze()
+				dis_real_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()).to(device)))
 
-			gen_result = gen(data)
-			dis_result = dis(data, gen_result)
-			dis_fake_loss = cGAN_loss(dis_result, Variable(torch.zeros(dis_result.size()).to(device)))
+				gen_result = gen(data)
+				dis_result = dis(data, gen_result)
+				dis_fake_loss = cGAN_loss(dis_result, Variable(torch.zeros(dis_result.size()).to(device)))
 
-			dis_train_loss = (dis_real_loss + dis_fake_loss)/2.0
-			dis_train_loss.backward()
-			dis_optimizer.step()
+				dis_train_loss = (dis_real_loss + dis_fake_loss)/2.0
+				dis_train_loss.backward()
+				dis_optimizer.step()
 
 			# train generator
-			gen.zero_grad()
+			for _ in range(gen_train_per_epoch):
+				gen.zero_grad()
 
-			gen_result = gen(data)
-			dis_result = dis(data, gen_result).squeeze()
+				gen_result = gen(data)
+				dis_result = dis(data, gen_result).squeeze()
 
-			gen_train_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()).to(device))) + gen_lambda * L1_loss(gen_result, target)
-			gen_train_loss.backward()
-			gen_optimizer.step()
+				gen_train_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()).to(device))) + gen_lambda * L1_loss(gen_result, target)
+				gen_train_loss.backward()
+				gen_optimizer.step()
 
-			if batch_idx % report_every == 0:
+			batches_done += 1
+			if (batches_done) % report_every == 0:
 				print('Train Epoch: {} \t GenLoss: {:.6f} \t DisRealLoss: {:.6f}\
 				 \t DisFakeLoss: {:.6f} \t DisTotalLoss: {:.6f}'.
 					format(epoch, gen_train_loss, dis_real_loss, dis_fake_loss, dis_train_loss))
@@ -90,6 +98,7 @@ def train(db):
 
 def main():
 	db = dataset.getDataset(folder, task)
+	# print("Dataset shape:",db['train'][0][0].shape)
 	train(db)
 
 
