@@ -14,9 +14,9 @@ folder = sys.argv[1]
 task = sys.argv[2]
 
 # hyper-parameters
-batch_size = 16
-epochs = 200
-report_every = 4
+batch_size = 4
+epochs = 100
+report_every = 16
 conv_gen = [3,16,32,64,128,256,512,512] # start with 3 if input image is RGB
 conv_dis = [6,16,32,64,128,256] # start with 6 if input image is RGB
 size = 256
@@ -67,13 +67,12 @@ def train(db):
 
 			dis_result = dis(data, target).squeeze()
 			# dis_real_loss = cGAN_loss(dis_result, Variable(torch.ones(dis_result.size()).to(device)))
-			dis_real_loss = cGAN_loss(dis_result, Variable((torch.rand(dis_result.size())*(1-0.8) + 0.8).to(device)))
+			dis_real_loss = cGAN_loss(dis_result, Variable((torch.rand(dis_result.size())*(1-0.7) + 0.7).to(device)))
 
 			gen_result = gen(data)
 			dis_result = dis(data, gen_result)
 			# dis_fake_loss = cGAN_loss(dis_result, Variable(torch.zeros(dis_result.size()).to(device)))
-			dis_fake_loss = cGAN_loss(dis_result, Variable((torch.rand(dis_result.size())*(1-0.8)).to(device)))
-			
+			dis_fake_loss = cGAN_loss(dis_result, Variable((torch.rand(dis_result.size())*0.3).to(device)))
 			dis_train_loss = (dis_real_loss + dis_fake_loss)/2.0
 			dis_train_loss.backward()
 			dis_optimizer.step()
