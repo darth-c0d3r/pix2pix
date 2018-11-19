@@ -13,7 +13,7 @@ class EncoderDecoderNetwork(nn.Module):
 
 		# model parameters
 		self.kernel_size = 4
-		self.stride = 2
+		self.stride = 2	
 		self.padding = 1
 		self.dropout = 0.5
 		self.leaky_relu_slope = 0.2

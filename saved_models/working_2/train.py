@@ -20,7 +20,7 @@ report_every = 2
 conv_gen = [3,16,32,64,128,256,512,512] # start with 3 if input image is RGB
 conv_dis = [6,16,32,64,128,256,512] # start with 6 if input image is RGB
 size = 256
-gen_lambda = 1.0
+gen_lambda = 20.0
 
 # GPU related info
 cuda = 1
@@ -93,10 +93,10 @@ def train(db):
 				print('Epoch: {} \t GLoss: {:.6f} \t DRLoss: {:.6f} \t DFLoss: {:.6f} \t DTLoss: {:.6f}'.
 					format(epoch, gen_train_loss, dis_real_loss, dis_fake_loss, dis_train_loss))
 
-			# if epoch > 20 and gen_train_loss < best_model:
-			#     torch.save(gen, 'saved_models/generator_model_'+task+'_'+str(epoch)+'.pt')
-			#     torch.save(dis, 'saved_models/discriminator_model_'+task+'_'+str(epoch)+'.pt')
-			#     best_model = gen_train_loss
+			if epoch > 20 and gen_train_loss < best_model:
+			    torch.save(gen, 'saved_models/generator_model_'+task+'_'+str(epoch)+'.pt')
+			    torch.save(dis, 'saved_models/discriminator_model_'+task+'_'+str(epoch)+'.pt')
+			    best_model = gen_train_loss
 
 	torch.save(gen, 'saved_models/generator_model_'+task+'.pt')
 	torch.save(dis, 'saved_models/discriminator_model_'+task+'.pt')
