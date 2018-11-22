@@ -3,4 +3,5 @@ __pycache__
 datasets
 *.jpg
 *.db
+*.gif
 .gitignore
