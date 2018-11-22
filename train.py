@@ -23,8 +23,9 @@ conv_gen = [3,16,32,64,128,256,512,512] # start with 3 if input image is RGB
 conv_dis = [6,16,32,64,128,256,512] # start with 6 if input image is RGB
 size = 256
 gen_lambda = 20.0
-invert_dataset = 0
-num_random_crops = 0
+invert_dataset = 1
+num_random_crops = 2
+gif_on = 1
 
 # GPU related info
 cuda = 1
@@ -51,7 +52,8 @@ dis_optimizer = optim.Adam(dis.parameters(), lr=0.0002, betas=(0.5, 0.999))
 def train(db):
 
 	batches_done = 0
-	all_frames = [[] for i in range(len(db['eval']))]
+	if gif_on == 1:
+		all_frames = [[] for i in range(len(db['eval']))]
 	
 	for epoch in range(1, epochs+1):
 
@@ -136,13 +138,11 @@ def train(db):
 				gen_eval_loss = gen_eval_cGAN_loss + gen_eval_L1_loss
 
 				# output_images = gen_result.cpu()
-
-				output_images = ((gen_result.cpu()/2.0)+0.5)
-
-				trans1 = torchvision.transforms.ToPILImage()
-				for idx in range(len(output_images)):
-					# print(trans1(output_images[idx]).shape)
-					all_frames[idx].append(np.asarray(trans1(output_images[idx])))
+				if gif_on == 1 and (epoch%10 == 0 or epoch == 1):
+					output_images = ((gen_result.cpu()/2.0)+0.5)
+					trans1 = torchvision.transforms.ToPILImage()
+					for idx in range(len(output_images)):
+						all_frames[idx].append(np.asarray(trans1(output_images[idx])))
 
 				batch_count += 1;
 				batch_gen_cGAN_loss += gen_eval_cGAN_loss
@@ -156,8 +156,9 @@ def train(db):
 			print('[Eval] Epoch: {} \t GcGANLoss: {:.6f} \t GL1Loss: {:.6f} \t GTLoss: {:.6f} \t DRLoss: {:.6f} \t DFLoss: {:.6f} \t DTLoss: {:.6f}'.
 				format(epoch, batch_gen_cGAN_loss/batch_count, batch_gen_L1_loss/batch_count, batch_gen_eval_loss/batch_count, batch_dis_real_loss/batch_count, batch_dis_fake_loss/batch_count, batch_dis_eval_loss/batch_count))
 
-	for idx in range(len(all_frames)):
-		imageio.mimsave('datasets/'+folder+'/eval_'+task+'/output/'+str(idx+1)+'.gif',all_frames[idx],'GIF',duration=0.5)
+	if gif_on == 1:
+		for idx in range(len(all_frames)):
+			imageio.mimsave('datasets/'+folder+'/eval_'+task+'/output/'+str(idx+1)+'.gif',all_frames[idx],'GIF',duration=0.5)
 
 	torch.save(gen, 'saved_models/generator_model_'+task+'.pt')
 	torch.save(dis, 'saved_models/discriminator_model_'+task+'.pt')
