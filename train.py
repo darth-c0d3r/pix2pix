@@ -20,7 +20,9 @@ report_every = 2
 conv_gen = [3,16,32,64,128,256,512,512] # start with 3 if input image is RGB
 conv_dis = [6,16,32,64,128,256,512] # start with 6 if input image is RGB
 size = 256
-gen_lambda = 1.0
+gen_lambda = 20.0
+invert_dataset = 0
+num_random_crops = 0
 
 # GPU related info
 cuda = 1
@@ -102,7 +104,11 @@ def train(db):
 	torch.save(dis, 'saved_models/discriminator_model_'+task+'.pt')
 
 def main():
-	db = dataset.getDataset(folder, task)
+	db = dataset.getDataset(folder, task, invert_dataset, num_random_crops)
+	print("Image Shape:",db['train'][0][0].shape)
+	print("Training Samples:",len(db['train']))
+	print("Evaluation Samples:",len(db['eval']))
+	print("Testing Samples:",len(db['test']))
 	train(db)
 
 
