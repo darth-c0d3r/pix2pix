@@ -1,4 +1,4 @@
-# bnw2color
+# pix2pix
 CS 663 (Digital Image Processing) Project
 
 ## Team
@@ -22,27 +22,18 @@ This is the original Research Paper written on the pix2pix network written at th
 
 The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class.
 
-### Places365 [3]
+### MIT CVCL Dataset [3]
 
-In total, the Places dataset contains more than 10 million images comprising 400+ unique scene categories. The dataset features 5000 to 30,000 training images per class, consistent with real-world frequencies of occurrence.
-
-### Microsoft COCO Dataset [4]
-
-It is a publicly available dataset of images with their captions. We can use a subset of those images to train and  test the images.
+Contains multiple databases composed of scenes belonging to the same semantic category. All images are of size 256x256, in jpeg format.
 
 ## Evaluation Metrics
 For evaluation we are using the same metrics as used in the original paper (stated below). We will be comparing our results with that of the original research paper.
-### Per-pixel accuracy
-### Per-class accuracy
-### Class IOU
 
 ## References:
 
 <ol>
 	<li>pix2pix Research Paper: https://arxiv.org/pdf/1611.07004.pdf</li>
 	<li>CIFAR-10 Dataset: https://www.cs.toronto.edu/~kriz/cifar.html</li>
-	<li>Places-365 Dataset: http://places2.csail.mit.edu/</li>
-	<li>Microsoft COCO: http://cocodataset.org/</li>
 	<li>MIT CVCL Dataset: http://cvcl.mit.edu/database.htm</li>
 	<li>Official pix2pix Repo: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix</li>
 	<li>PyTorch Website: https://pytorch.org/</li>
