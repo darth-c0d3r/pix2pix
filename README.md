@@ -43,7 +43,7 @@ For results, please refer the final presentation in the report folder.
 
 First create a folder `datasets` in the main repository. Create a folder inside that with the name of dataset you are using. Inside that folder, create a folder `full_dataset` that contains all the colored images. After this run the following command.
 ```bash
-python3 create_dataset.py \<Dataset Name\> \<Task\>
+python3 create_dataset.py <Dataset Name> <Task>
 ```
 The task can be one of `bnw2color, impaint_fix, deblur`.
 
@@ -51,7 +51,7 @@ The task can be one of `bnw2color, impaint_fix, deblur`.
 
 Before training, create a folder named `saved_models` in which the results will be automatically saved. After successfully creating the dataset and creating the folder, run the following command to start training the model.
 ```bash
-python3 train.py \<Dataset Name\> \<Task\>
+python3 train.py <Dataset Name> <Task>
 ```
 The hyperparameters can be tuned by making the relevant changes in `train.py`, `generator.py` and `discriminator.py` files.
 
@@ -59,7 +59,7 @@ The hyperparameters can be tuned by making the relevant changes in `train.py`, `
 
 To use the trained model on eval or test set, use the following command.
 ```bash
-python3 predict.py \<Dataset Name\> \<Task\>
+python3 predict.py <Dataset Name> <Task>
 ```
 To switch between eval and test sets make relevant changes in the path variable in the `predict.py` file.
 
