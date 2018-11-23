@@ -16,10 +16,10 @@ print("Device:", device)
 folder = sys.argv[1]
 task = sys.argv[2]
 
-generator = torch.load("saved_models/generator_model_"+task+".pt", map_location='cpu').to(device)
+generator = torch.load("saved_models/generator_model_"+task+"_3.pt", map_location='cpu').to(device)
 generator.eval()
-root_dir_input = "datasets/"+folder+"/eval_"+task+"/input/"
-root_dir_output = "datasets/"+folder+"/eval_"+task+"/output/"
+root_dir_input = "datasets/"+folder+"/test_"+task+"/input/"
+root_dir_output = "datasets/"+folder+"/test_"+task+"/output/"
 files = os.listdir(root_dir_input)
 
 with torch.no_grad():
